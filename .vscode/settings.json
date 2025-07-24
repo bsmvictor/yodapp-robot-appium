@@ -1,0 +1,5 @@
+{
+    "python.defaultInterpreterPath": "/Users/scoder/Developer/yodapp-robot/.venv/bin/python",
+    "robot.language-server.python": "/Users/scoder/Developer/yodapp-robot/.venv/bin/python",
+    "robot.python.executable": "/Users/scoder/Developer/yodapp-robot/.venv/bin/python"
+}

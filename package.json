@@ -1,0 +1,18 @@
+{
+  "name": "yodapp",
+  "version": "1.0.0",
+  "description": "projeto de testes automatizados par mobile com appium",
+  "license": "ISC",
+  "author": "Victor Boaventura",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "appium": "^2.19.0"
+  },
+  "devDependencies": {
+    "appium-uiautomator2-driver": "^4.2.6"
+  }
+}
