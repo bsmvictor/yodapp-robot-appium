@@ -25,7 +25,7 @@ Start session
         ...    https://hub.browserstack.com/wd/hub
         ...    platformName=Android
         ...    deviceName=Google Pixel 7
-        ...    platformVersion=12.0
+        ...    platformVersion=13.0
         ...    automationName=UIAutomator2
         ...    app=${BROWSERSTACK_APP}
         ...    bstack:options=${BROWSERSTACK_OPTIONS}
