@@ -17,7 +17,7 @@ Should remove Darth Vader
    ${OFFSET_X}    Evaluate    ${POSITIONS}[x] - 600
    ${OFFSET_Y}    Set Variable    ${POSITIONS}[y]
 
-    Swipe    ${START_X}    ${START_Y}    ${OFFSET_X}    ${OFFSET_Y}    1000s
+    Swipe    ${START_X}    ${START_Y}    ${OFFSET_X}    ${OFFSET_Y}    1000
     Click Element    id=com.qaxperience.yodapp:id/btnRemove
     Wait Until Page Does Not Contain    Darth Vader    5s
     Close session
