@@ -1,0 +1,71 @@
+name: BrowserStack mobile tests
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  robot-browserstack:
+    name: Robot Framework on BrowserStack
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+      BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Validate BrowserStack credentials
+        run: |
+          test -n "$BROWSERSTACK_USERNAME"
+          test -n "$BROWSERSTACK_ACCESS_KEY"
+
+      - name: Upload application to BrowserStack
+        id: upload-app
+        run: |
+          response=$(curl --fail-with-body --silent --show-error \
+            --user "$BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY" \
+            --request POST \
+            --url https://api-cloud.browserstack.com/app-automate/upload \
+            --form file=@app/yodapp-beta.apk)
+
+          app_url=$(jq -r '.app_url // empty' <<< "$response")
+          test -n "$app_url"
+          echo "app_url=$app_url" >> "$GITHUB_OUTPUT"
+
+      - name: Run Robot Framework suite
+        run: |
+          python -m robot \
+            --outputdir results \
+            --variable EXECUTION_TARGET:browserstack \
+            --variable BROWSERSTACK_APP:"${{ steps.upload-app.outputs.app_url }}" \
+            --variable BROWSERSTACK_USERNAME:"$BROWSERSTACK_USERNAME" \
+            --variable BROWSERSTACK_ACCESS_KEY:"$BROWSERSTACK_ACCESS_KEY" \
+            --variable BROWSERSTACK_BUILD:"${GITHUB_WORKFLOW}-${GITHUB_RUN_NUMBER}" \
+            tests
+
+      - name: Upload Robot Framework reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: robot-results-${{ github.run_number }}
+          path: results/
+          if-no-files-found: warn

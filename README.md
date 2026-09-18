@@ -135,6 +135,17 @@ Os relatórios podem ser gerados na pasta `results/` com os artefatos padrão do
 - `report.html`
 - `output.xml`
 
+## GitHub Actions com BrowserStack
+
+O workflow [`browserstack.yml`](.github/workflows/browserstack.yml) faz upload do APK para o BrowserStack App Automate e executa a suíte Robot Framework em um dispositivo Android real.
+
+Antes de executar o workflow, cadastre os seguintes GitHub Actions Secrets no repositório:
+
+- `BROWSERSTACK_USERNAME`
+- `BROWSERSTACK_ACCESS_KEY`
+
+O workflow é executado em pushes para `main` ou manualmente pela opção **Run workflow**. Os relatórios `log.html`, `report.html` e `output.xml` ficam disponíveis como artefato da execução.
+
 ## Observações
 
 - O projeto assume que o APK já está versionado localmente no repositório.
